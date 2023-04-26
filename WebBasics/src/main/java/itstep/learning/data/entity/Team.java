@@ -4,18 +4,18 @@ import java.sql.ResultSet;
 import java.util.UUID;
 
 public class Team extends Entity {
-    private UUID id ;
-    private String name ;
+    private UUID id;
+    private String name;
 
     public Team() {
     }
-    public Team( ResultSet res ) {
+
+    public Team(ResultSet res) {
         try {
-            setId( UUID.fromString( res.getString( "id" ) ) ) ;
-            setName( res.getString( "name" ) ) ;
-        }
-        catch( Exception ex ) {
-            throw new RuntimeException( ex.getMessage() ) ;
+            setId(UUID.fromString(res.getString("id")));
+            setName(res.getString("name"));
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
         }
     }
 
@@ -23,7 +23,7 @@ public class Team extends Entity {
         return id;
     }
 
-    public void setId( UUID id ) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -31,7 +31,7 @@ public class Team extends Entity {
         return name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 }
