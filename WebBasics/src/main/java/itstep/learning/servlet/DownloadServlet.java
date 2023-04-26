@@ -13,40 +13,46 @@ import java.nio.file.Files;
 
 @Singleton
 public class DownloadServlet extends HttpServlet {
-    @Inject @Named( "AvatarFolder" )
-    private String avatarFolder ;
+    @Inject @Named("AvatarFolder") private String avatarFolder;
 
     @Override
-    protected void doGet( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
-        String path = req.getServletContext().getRealPath( "/" ) + avatarFolder ;   // из Upload (RegUser)
-        String requestedFile = req.getPathInfo() ;
-        File file = new File( path, requestedFile ) ;
-        if( file.isFile() && file.canRead() ) {
-            String mimeType = Files.probeContentType( file.toPath() ) ;
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String path = req.getServletContext().getRealPath("/") + avatarFolder; // из Upload (RegUser)
+        String requestedFile = req.getPathInfo();
+        File file = new File(path, requestedFile);
+        if (file.isFile() && file.canRead()) {
+            String mimeType = Files.probeContentType(file.toPath());
+            // System.out.println(mimeType);
+
             // проверка типа файла на изображение
-            if( ! mimeType.startsWith( "image" ) ) {
-                resp.setStatus( 415 ) ;
-                resp.getWriter().print( "Unsupported Media Type: " + mimeType ) ;
-                return ;
+            if( ! mimeType.startsWith("image") || (mimeType.endsWith("gif") || mimeType.endsWith("avif"))) {
+                resp.setStatus(415);
+                resp.getWriter().print("Unsupported Media Type: " + mimeType);
+                return;
             }
 
-            resp.setContentType( mimeType ) ;
+            if(mimeType.endsWith("class") || mimeType.endsWith("php") || mimeType.endsWith("exe")) {
+                System.err.println("DownloadServlet:: forbidden type: " + mimeType);
+                return;
+            }
 
-            // resp.setContentType( "application/octet-stream" ) ;
-            // resp.setHeader( "Content-Disposition", "attachment; filename=\"download.jpg\"" ) ;
+            resp.setContentType(mimeType);
+
+            // resp.setContentType("application/octet-stream");
+            // resp.setHeader("Content-Disposition", "attachment; filename=\"download.jpg\"");
 
             // piping - передача данных из одного потока в другой
-            byte[] buf = new byte[1024] ;
-            try( InputStream  reader = Files.newInputStream( file.toPath() ) ;
-                 OutputStream writer = resp.getOutputStream() ) {
-                int len ;
-                while( ( len = reader.read( buf ) ) != -1 ) {
-                    writer.write( buf, 0, len ) ;
+            byte[] buf = new byte[1024];
+            try ( InputStream reader = Files.newInputStream(file.toPath());
+                  OutputStream writer = resp.getOutputStream() ) {
+                int len;
+                while ( (len = reader.read(buf) ) != -1) {
+                    writer.write(buf, 0, len);
                 }
             }
-            catch( IOException ex ) {
-                resp.setStatus( 500 ) ;
-                System.err.println( "DownloadServlet: " + ex.getMessage() ) ;
+            catch (IOException ex) {
+                resp.setStatus(500);
+                System.err.println("DownloadServlet: " + ex.getMessage());
             }
         }
     }
@@ -64,10 +70,7 @@ public class DownloadServlet extends HttpServlet {
     req.getContextPath()   /WebBasics
     req.getServletPath()   /image
     req.getPathInfo()      /123.jpg                                    /
-
     http://localhost:8080/WebBasics/image -- 404
-
-
     Передача файлов должна сопровождаться заголовком Content-Type
     иначе по умолчанию он считается text/plain и может некорректно отображаться
     тип можно получить методом Files.probeContentType( file.toPath() ) ;
