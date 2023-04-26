@@ -6,41 +6,39 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Task extends Entity {
-    private UUID id ;
-    private String name ;
-    private int status ;
-    private UUID idUser ;
-    private UUID idTeam ;
-    private Date createdDt ;
-    private Date deadline ;
-    private byte priority ;
-
-    public static final SimpleDateFormat sqlDatetime =
-        new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ) ;
+    private UUID id;
+    private String name;
+    private int status;
+    private UUID idUser;
+    private UUID idTeam;
+    private Date createdDt;
+    private Date deadline;
+    private byte priority;
 
     public Task() {
     }
-    public Task( ResultSet res ) {
+
+    public Task(ResultSet res) {
         try {
-            setId( UUID.fromString( res.getString( "id" ) ) ) ;
-            setName( res.getString( "name" ) ) ;
-            setStatus( res.getInt( "status" ) ) ;
-            setIdUser( UUID.fromString( res.getString( "id_user" ) ) ) ;
-            setIdTeam( UUID.fromString( res.getString( "id_team" ) ) ) ;
-            setCreatedDt( sqlDatetime.parse( res.getString( "created_dt" ) ) ) ;
-            setDeadline(  sqlDatetime.parse( res.getString( "deadline" ) ) ); ;
-            setPriority( res.getByte( "priority" ) ) ;
-        }
-        catch( Exception ex ) {
-            throw new RuntimeException( ex.getMessage() ) ;
+            setId(UUID.fromString(res.getString("id")));
+            setName(res.getString("name"));
+            setStatus(res.getInt("status"));
+            setIdUser(UUID.fromString(res.getString("id_user")));
+            setIdTeam(UUID.fromString(res.getString("id_team")));
+            setCreatedDt(Entity.sqlDatetimeFormat.parse(res.getString("created_dt")));
+            setDeadline(Entity.sqlDatetimeFormat.parse(res.getString("deadline")));
+            setPriority(res.getByte("priority"));
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
         }
     }
-    // region Get|Set
+
+    // region accessors
     public UUID getId() {
         return id;
     }
 
-    public void setId( UUID id ) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -48,7 +46,7 @@ public class Task extends Entity {
         return name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -56,7 +54,7 @@ public class Task extends Entity {
         return status;
     }
 
-    public void setStatus( int status ) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -64,7 +62,7 @@ public class Task extends Entity {
         return idUser;
     }
 
-    public void setIdUser( UUID idUser ) {
+    public void setIdUser(UUID idUser) {
         this.idUser = idUser;
     }
 
@@ -72,7 +70,7 @@ public class Task extends Entity {
         return idTeam;
     }
 
-    public void setIdTeam( UUID idTeam ) {
+    public void setIdTeam(UUID idTeam) {
         this.idTeam = idTeam;
     }
 
@@ -80,7 +78,7 @@ public class Task extends Entity {
         return createdDt;
     }
 
-    public void setCreatedDt( Date createdDt ) {
+    public void setCreatedDt(Date createdDt) {
         this.createdDt = createdDt;
     }
 
@@ -88,7 +86,7 @@ public class Task extends Entity {
         return deadline;
     }
 
-    public void setDeadline( Date deadline ) {
+    public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
 
@@ -96,7 +94,7 @@ public class Task extends Entity {
         return priority;
     }
 
-    public void setPriority( byte priority ) {
+    public void setPriority(byte priority) {
         this.priority = priority;
     }
     // endregion
