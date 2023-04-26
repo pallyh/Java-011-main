@@ -9,25 +9,21 @@ import itstep.learning.data.dao.UserDao;
 
 @Singleton
 public class DataContext {
-    private final UserDao  userDao  ;
-    private final TeamDao  teamDao  ;
-    private final TaskDao  taskDao  ;
-    private final StoryDao storyDao ;
+    private final UserDao userDao;
+    private final TeamDao teamDao;
+    private final TaskDao taskDao;
+    private final StoryDao storyDao;
 
     @Inject
-    public DataContext( UserDao userDao, TeamDao teamDao, TaskDao taskDao, StoryDao storyDao ) {
-        this.userDao  = userDao  ;
-        this.teamDao  = teamDao  ;
-        this.taskDao  = taskDao  ;
-        this.storyDao = storyDao ;
+    public DataContext(UserDao userDao, TeamDao teamDao, TaskDao taskDao, StoryDao storyDao) {
+        this.userDao = userDao;
+        this.teamDao = teamDao;
+        this.taskDao = taskDao;
+        this.storyDao = storyDao;
     }
 
     public StoryDao getStoryDao() {
-        return storyDao ;
-    }
-
-    public TaskDao getTaskDao() {
-        return taskDao;
+        return storyDao;
     }
 
     public UserDao getUserDao() {
@@ -36,5 +32,9 @@ public class DataContext {
 
     public TeamDao getTeamDao() {
         return teamDao;
+    }
+
+    public TaskDao getTaskDao() {
+        return taskDao;
     }
 }
