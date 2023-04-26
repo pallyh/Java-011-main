@@ -12,14 +12,14 @@ import java.lang.reflect.Field;
 
 public class WebsocketConfigurator extends ServerEndpointConfig.Configurator {
     @Inject
-    private static Injector injector ;  // ! статическая инъекция
+    private static Injector injector; // ! статическая инъекция
 
     /**
      * Управление созданием экземпляра Вебсокет-сервера
      */
     @Override
-    public <T> T getEndpointInstance( Class<T> endpointClass ) throws InstantiationException {
-        return injector.getInstance( endpointClass ) ;
+    public <T> T getEndpointInstance(Class<T> endpointClass) throws InstantiationException {
+        return injector.getInstance(endpointClass);
     }
 
     /**
@@ -29,34 +29,33 @@ public class WebsocketConfigurator extends ServerEndpointConfig.Configurator {
     public void modifyHandshake(
                     ServerEndpointConfig sec,
                     HandshakeRequest request,
-                    HandshakeResponse response ) {
-        super.modifyHandshake( sec, request, response ) ;
-        // request - не НТТР, а HTTP-request, передавший код JS, который открывает соединение
+                    HandshakeResponse response) {
+        super.modifyHandshake(sec, request, response);
+        // request = не HTTP, а HTTP-request, передавший код JS, который открывает соединение
         // находится внутри него, но в приватном поле. Извлекаем его методами рефлексии
-        HttpServletRequest httpServletRequest = null ;
+        HttpServletRequest httpServletRequest = null;
         try {
-            for( Field field :                                   // Цикл по всем полям (рефлексии),
-                    request.getClass().getDeclaredFields() ) {   // которые объявлены в классе объекта request
-                if( HttpServletRequest.class                     // Проверяем совместимость типов: объекту типа HttpServletRequest
-                      .isAssignableFrom( field.getType() ) ) {   // может быть присвоено значение типа данного поля
-                    field.setAccessible( true ) ;
-                    httpServletRequest = (HttpServletRequest) field.get( request ) ;
+            for(Field field :                                   // Цикл по всем полям (рефлексии),
+                    request.getClass().getDeclaredFields()) {   // которые объявлены в классе объекта request
+                if(HttpServletRequest.class                     // Проверяем совместимость типов: объекту типа HttpServletRequest
+                    .isAssignableFrom(field.getType())) {       // может быть присвоено значение типа данного поля
+                    field.setAccessible(true);
+                    httpServletRequest = (HttpServletRequest) field.get(request);
                 }
             }
-            // Field requestField = request.getClass().getDeclaredField( "request" ) ;
+            // Field requestField = request.getClass().getDeclaredField("request");
+        } catch (IllegalAccessException ex) {
+            System.err.println("modifyHandshake:: " + ex.getMessage());
         }
-        catch( IllegalAccessException ex ) {
-            System.err.println( "modifyHandshake " + ex.getMessage() ) ;
+        User authUser = null;
+        if(httpServletRequest != null) {
+            authUser = (User) httpServletRequest.getAttribute("authUser");
         }
-        User authUser = null ;
-        if( httpServletRequest != null ) {
-            authUser = (User) httpServletRequest.getAttribute( "authUser" ) ;
-        }
-        if( authUser != null ) {   // переносим данные об авторизованном пользователе в ServerEndpointConfig
-            sec.getUserProperties().put( "authUser", authUser ) ;
+        if(authUser != null) { // переносим данные об авторизованном пользователе в ServerEndpointConfig
+            sec.getUserProperties().put("authUser", authUser);
         }
         else {
-            throw new RuntimeException( "Unauthorized user in websocket" ) ;
+            throw new RuntimeException("Unauthorized user in websocket");
         }
     }
 }
