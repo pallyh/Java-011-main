@@ -4,11 +4,11 @@ import itstep.learning.data.entity.Story;
 import itstep.learning.data.entity.User;
 
 public class StoryViewModel {
-    private Story story ;
-    private User user ;
-    private StoryViewModel replyStory ;
+    private Story story;
+    private User user;
+    private StoryViewModel replyStory;
 
-    public StoryViewModel( Story story, User user, StoryViewModel replyStory ) {
+    public StoryViewModel(Story story, User user, StoryViewModel replyStory) {
         this.story = story;
         this.user = user;
         this.replyStory = replyStory;
@@ -21,7 +21,7 @@ public class StoryViewModel {
         return story;
     }
 
-    public void setStory( Story story ) {
+    public void setStory(Story story) {
         this.story = story;
     }
 
@@ -29,7 +29,7 @@ public class StoryViewModel {
         return user;
     }
 
-    public void setUser( User user ) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -37,7 +37,7 @@ public class StoryViewModel {
         return replyStory;
     }
 
-    public void setReplyStory( StoryViewModel replyStory ) {
+    public void setReplyStory(StoryViewModel replyStory) {
         this.replyStory = replyStory;
     }
 }
