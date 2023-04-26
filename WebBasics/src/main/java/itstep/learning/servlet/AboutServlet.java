@@ -15,13 +15,13 @@ public class AboutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // передача данных на представление - через атрибуты запроса
-        AboutModel model = new AboutModel() ;
-        model.setMessage( "Hello from servlet" ) ;
-        model.setMoment( new Date() ) ;
-        req.setAttribute( "data", model ) ;
+        AboutModel model = new AboutModel();
+        model.setMessage("Hello from servlet");
+        model.setMoment(new Date());
+        req.setAttribute("data", model);
 
-        req.getRequestDispatcher( "WEB-INF/about.jsp" )
-                .forward( req, resp ) ;
+        req.getRequestDispatcher("WEB-INF/about.jsp")
+                .forward(req, resp);
     }
 }
 /*
