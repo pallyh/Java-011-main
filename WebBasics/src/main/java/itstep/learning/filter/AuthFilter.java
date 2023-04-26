@@ -12,11 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Singleton
-public class AuthFilter implements Filter {   // Auth Middleware
-    @Inject
-    private AuthService authService ;
-    @Inject
-    private Logger logger ;   // Guice auto inject JUL
+public class AuthFilter implements Filter { // AuthMiddleware
+    @Inject private AuthService authService;
+    @Inject private Logger logger; // Guice auto inject JUL
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -25,20 +23,20 @@ public class AuthFilter implements Filter {   // Auth Middleware
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        // logger.log( Level.WARNING, "Warning from AuthFilter" ) ;
+        // logger.log(Level.WARNING, "Warning from AuthFilter");
 
-        HttpServletRequest request = (HttpServletRequest) servletRequest ;
-        // System.out.println("Auth filter");
-        if( request.getParameter( "logout" ) != null ) {
-            authService.logout( request ) ;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        // System.out.println("AuthFilter");
+        if (servletRequest.getParameter("logout") != null) {
+            authService.logout(request);
             // изменение статуса авторизации должно перегружать страницу
-            HttpServletResponse response = (HttpServletResponse) servletResponse ;
-            response.sendRedirect( request.getContextPath() + "/home" ) ;
-            return ;  // sendRedirect - не прекращает обработку
+            HttpServletResponse response = (HttpServletResponse) servletResponse;
+            response.sendRedirect(request.getContextPath() + "/home");
+            return; // sendRedirect - не прекращает обработку
         }
-        authService.authorize( request ) ;
-        servletRequest.setAttribute( "authUser", authService.getAuthUser() ) ;
-        filterChain.doFilter( servletRequest, servletResponse ) ;
+        authService.authorize(request);
+        servletRequest.setAttribute("authUser", authService.getAuthUser());
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
