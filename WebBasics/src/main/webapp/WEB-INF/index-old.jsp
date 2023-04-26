@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    String domain = request.getContextPath() ;
+    String domain = request.getContextPath();
 %>
 <h2>Java Web</h2>
 <a href="<%=domain%>/forms">Передача данных. Формы</a><br/>
@@ -11,10 +11,10 @@
 </p>
 <h3>Создание сервлета.</h3>
 <p>
-    Проверяем/добавляем зависимость https://mvnrepository.com/artifact/javax.servlet/servlet-api
+    Проверяем/добавляем зависимость https://mvnrepository.com/artifact/javax.servlet/servlet-api/2.5
     Создаем пакет "servlet", в нем - новый класс HomeServlet, переопределяем в нем метод doGet
     Регистрируем сервлет и указываем роутинг:
-    a) web.xml
+    а) web.xml
     б) [для версии servlet-api > 3.0] при помощи аннотации @WebServlet("/about")
 </p>
 <p>
