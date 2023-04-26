@@ -7,48 +7,44 @@ import java.util.UUID;
 
 public class User extends Entity {  // ORM for DB table Users
     // region fields
-    private UUID id ;
-    private String login ;
-    private String name ;
-    private String salt ;
-    private String pass ;
-    private String email ;
-    private String confirm ;
-    private Date regDt ;
-    private String avatar ;
-    private Date deleteDt ;
-    private String roleId ;
+    private UUID id;
+    private String login;
+    private String name;
+    private String salt;
+    private String pass;
+    private String email;
+    private String confirm;
+    private Date regDt;
+    private String avatar;
+    private Date deleteDt;
+    private String roleId;
     // endregion
 
     // region constructors
     public User() {
     }
-    private static final SimpleDateFormat sqlDatetime =
-            new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ) ;
-    public User( ResultSet res ) throws RuntimeException {
+
+    public User(ResultSet res) throws RuntimeException {
         try {
-            setId( UUID.fromString( res.getString( "id" ) ) ) ;
-            setLogin(   res.getString( "login" ) ) ;
-            setName(    res.getString( "name" ) ) ;
-            setSalt(    res.getString( "salt" ) ) ;
-            setPass(    res.getString( "pass" ) ) ;
-            setEmail(   res.getString( "email" ) ) ;
-            setConfirm( res.getString( "confirm" ) ); ;
-            setAvatar(  res.getString( "avatar" ) ); ;
-            setRoleId(  res.getString( "role_id" ) ); ;
-            setRegDt( sqlDatetime.parse( res.getString( "reg_dt" ) ) ) ;
-            String deleteDtString = res.getString( "delete_dt" ) ;
-            if( deleteDtString != null )
-                setDeleteDt( sqlDatetime.parse( deleteDtString ) ) ;
-        }
-        catch( Exception ex ) {
-            throw new RuntimeException( ex.getMessage() ) ;
+            setId(UUID.fromString(res.getString("id")));
+            setLogin(res.getString("login"));
+            setName(res.getString("name"));
+            setSalt(res.getString("salt"));
+            setPass(res.getString("pass"));
+            setEmail(res.getString("email"));
+            setConfirm(res.getString("confirm"));
+            setAvatar(res.getString("avatar"));
+            setRoleId(res.getString("role_id"));
+            setRegDt(Entity.sqlDatetimeFormat.parse(res.getString("reg_dt")));
+            String deleteDtString = res.getString("delete_dt");
+            if (deleteDtString != null) setDeleteDt(Entity.sqlDatetimeFormat.parse(deleteDtString));
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
         }
     }
     // endregion
 
     // region accessors
-
     public UUID getId() {
         return id;
     }
@@ -136,7 +132,6 @@ public class User extends Entity {  // ORM for DB table Users
     public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
-
     // endregion
 }
 /*
@@ -145,7 +140,6 @@ CREATE TABLE `user_roles` (
       `descr` tinytext NOT NULL,
       PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
-
 CREATE TABLE `users` (
   `id`      char(36) NOT NULL COMMENT 'UUID',
   `login`   varchar(64) NOT NULL,
