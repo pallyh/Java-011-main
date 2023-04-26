@@ -1,64 +1,114 @@
 <%@ page import="itstep.learning.model.FormsModel" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
-    FormsModel model = (FormsModel) request.getAttribute( "formsModel" ) ;
-    String path = request.getContextPath() ;
+    FormsModel model = (FormsModel) request.getAttribute("formsModel");
+    String path = request.getContextPath();
 %>
 <html>
 <head>
-    <meta charset="UTF-8" />
     <title>Forms</title>
+    <style>
+        main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4em;
+        }
+
+        form {
+            padding: 1em;
+        }
+
+        form:nth-child(1) {
+            background: darksalmon;
+        }
+
+        form:nth-child(2) {
+            background: darkkhaki;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        div.form-control {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        div.form-control label,
+        div.form-control input[type="date"],
+        div.form-control input[type="color"],
+        div.form-control input[type="submit"] {
+            cursor: pointer;
+        }
+
+        input.string-input {
+            margin-left: 1em;
+            width: 12em;
+        }
+
+        input.number-input {
+            width: 7em;
+        }
+    </style>
 </head>
-<style>
-    .container{
-        width: 80%;
-        border: 1px solid green;
-    }
-    .d-flex{
-        display: flex;
-    }
-    .f-col{
-        display: flex;
-        flex-direction: column;
-    }
-    .mb-2{
-        margin-bottom: 2em;
-    }
-    .m-auto{
-        margin: auto;
-    }
-    .maxW-200{
-        max-width: 200px;
-    }
-    .minH-200{
-        min-height: 200px;
-    }
-</style>
 <body>
-<div class="d-flex">
+<h1>Передача данных</h1>
+<main>
+    <form action="<%= path %>/forms" method="get">
+        <h2>Form GET</h2>
+        <div class="form-control">
+            <label for="string1">Enter string:</label>
+            <input name="string" type="text" class="string-input" id="string1"/>
+        </div>
+        <div class="form-control">
+            <label for="number1">Enter number:</label>
+            <input name="number" type="number" step="0.01" class="number-input" id="number1"/>
+        </div>
+        <div class="form-control">
+            <label for="date1">Enter date:</label>
+            <input name="date" type="date" id="date1"/>
+        </div>
+        <div class="form-control">
+            <label for="color1">Choose color:</label>
+            <input name="color" type="color" id="color1"/>
+        </div>
+        <div class="form-control">
+            <input type="submit" value="Submit GET"/>
+        </div>
+    </form>
+
+    <form action="<%= path %>/forms" method="post">
+        <h2>Form POST</h2>
+        <div class="form-control">
+            <label for="string2">Enter string:</label>
+            <input name="string" type="text" class="string-input" id="string2"/>
+        </div>
+        <div class="form-control">
+            <label for="number2">Enter number:</label>
+            <input name="number" type="number" class="number-input" id="number2"/>
+        </div>
+        <div class="form-control">
+            <label for="date2">Enter date:</label>
+            <input name="date" type="date" id="date2"/>
+        </div>
+        <div class="form-control">
+            <label for="color2">Choose color:</label>
+            <input name="color" type="color" id="color2"/>
+        </div>
+        <div class="form-control">
+            <input type="submit" value="Submit POST"/>
+        </div>
+    </form>
     <div>
-        <form action="<%= path %>/forms" method="post" class="f-col mb-2 maxW-200">
-            <label>Text:   <input name="text"   type="text"></label>
-            <label>Number: <input name="number" type="number" step="0.01"></label>
-            <input name="date"   type="date">
-            <input name="color"  type="color">
-            <input type="submit" value="Post Form">
-        </form>
-        <form action="<%= path %>/forms" method="get" class="f-col mb-2 maxW-200">
-            <label>Text:   <input name="text"   type="text"></label>
-            <label>Number: <input name="number" type="number" step="0.01"></label>
-            <input name="date"   type="date">
-            <input name="color"  type="color">
-            <input type="submit" value="Get Form">
-        </form>
-    </div>
-    <div class="container m-auto minH-200" >
         Method = <%= model.getMethod() %> <br>
-        Text   = <%= model.getText() %>   <br>
+        String = <%= model.getString() %> <br>
         Number = <%= model.getNumber() %> <br>
-        Date   = <%= model.getDate() %>   <br>
-        Color  = <%= model.getColor() %>  <br>
+        Date = <%= model.getDate() %> <br>
+        Color = <%= model.getColor() %> <br>
     </div>
-</div>
+</main>
 </body>
 </html>
