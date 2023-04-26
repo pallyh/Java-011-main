@@ -5,7 +5,6 @@ import com.google.inject.Singleton;
 import itstep.learning.service.DbService;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Singleton
